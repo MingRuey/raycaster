@@ -118,7 +118,12 @@ int main(int argc, char *args[])
                 const auto nextCounter = SDL_GetPerformanceCounter();
                 const auto seconds = (nextCounter - tickCounter) /
                                      static_cast<float>(tickFrequency);
+
+                string info = "(x, y, a) : (" + to_string(game.playerX) + "," +
+                              to_string(game.playerY) + "," +
+                              to_string(game.playerA) + ")";
                 tickCounter = nextCounter;
+                SDL_SetWindowTitle(sdlWindow, info.c_str());
                 game.Move(moveDirection, rotateDirection, seconds);
             }
             SDL_DestroyTexture(floatTexture);
