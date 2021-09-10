@@ -1,8 +1,11 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 
+#include "framerate.h"
 #include "game.h"
 #include "raycaster.h"
 #include "raycaster_fixed.h"
@@ -101,6 +104,7 @@ int main(int argc, char *args[])
                 sdlRenderer, SDL_PIXELFORMAT_ARGB8888,
                 SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+            FrameRateCalculator frameRateCalculator;
             while (!isExiting) {
                 floatRenderer.TraceFrame(&game, floatBuffer);
                 fixedRenderer.TraceFrame(&game, fixedBuffer);
@@ -119,11 +123,13 @@ int main(int argc, char *args[])
                 const auto seconds = (nextCounter - tickCounter) /
                                      static_cast<float>(tickFrequency);
 
-                string info = "(x, y, a) : (" + to_string(game.playerX) + "," +
-                              to_string(game.playerY) + "," +
-                              to_string(game.playerA) + ")";
+                auto frame_rate = frameRateCalculator.GetFrameRate(seconds);
+                stringstream stream;
+                stream << "frame rate: " << setw(6) << frame_rate << " hz";
+                stream << " (x, y, a) : (" << game.playerX << ","
+                       << game.playerY << "," << game.playerA << ")";
                 tickCounter = nextCounter;
-                SDL_SetWindowTitle(sdlWindow, info.c_str());
+                SDL_SetWindowTitle(sdlWindow, stream.str().c_str());
                 game.Move(moveDirection, rotateDirection, seconds);
             }
             SDL_DestroyTexture(floatTexture);

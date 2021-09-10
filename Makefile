@@ -29,6 +29,7 @@ OBJS := \
 	raycaster_fixed.o \
 	raycaster_float.o \
 	renderer.o \
+	framerate.o \
 	main.o
 deps := $(OBJS:%.o=.%.o.d)
 
