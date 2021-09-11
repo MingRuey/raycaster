@@ -12,7 +12,7 @@ public:
                uint8_t *textureX,
                uint16_t *textureY,
                uint16_t *textureStep);
-
+    float _d;
     RayCasterFloat();
     ~RayCasterFloat();
 
