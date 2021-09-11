@@ -93,7 +93,8 @@ float RayCasterFloat::Distance(float playerX,
                 (tileStepY == -1 && (interceptY >= tileY)))) {
             somethingDone = true;
             tileX += tileStepX;
-            if (IsWall(tileX, interceptY)) {
+            if (IsWall(tileX, interceptY) ||
+                IsWall(tileX - tileStepX, interceptY)) {
                 verticalHit = true;
                 rayX = tileX + (tileStepX == -1 ? 1 : 0);
                 rayY = interceptY;
@@ -107,7 +108,8 @@ float RayCasterFloat::Distance(float playerX,
                                 (tileStepX == -1 && (interceptX >= tileX)))) {
             somethingDone = true;
             tileY += tileStepY;
-            if (IsWall(interceptX, tileY)) {
+            if (IsWall(interceptX, tileY) ||
+                IsWall(interceptX, tileY - tileStepY)) {
                 horizontalHit = true;
                 rayX = interceptX;
                 *hitOffset = interceptX;
